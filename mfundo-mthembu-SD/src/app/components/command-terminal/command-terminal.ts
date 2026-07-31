@@ -1,9 +1,10 @@
-import { Component, inject, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { Input, OnInit, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommandModalService } from '../../services/command-modal-service';
 import { RecruiterStateService } from '../../services/recruiter-state-service';
+import { InfoPanelService } from '../../services/info-panel.service';
 
 
 interface CommandEntry {
@@ -28,6 +29,7 @@ export class CommandTerminal implements OnInit, AfterViewChecked {
 
   private modalService = inject(CommandModalService);
   private recruiterState = inject(RecruiterStateService);
+  private infoPanelService = inject(InfoPanelService);
 
   private availableCommands = [
     'git checkout about',
@@ -49,7 +51,6 @@ export class CommandTerminal implements OnInit, AfterViewChecked {
   commandHistory: CommandEntry[] = [];
   inputValue = '';
   hint = '';
-  @Output() infoPanel = new EventEmitter<{ title: string; content: string }>();
   private nextId = 1;
   private inputHistory: string[] = [];
   private historyIndex = -1;
@@ -174,13 +175,10 @@ export class CommandTerminal implements OnInit, AfterViewChecked {
         this.modalService.openModal(input);
         return 'Opening Contacts section...';
         case 'show goal':
-        this.infoPanel.emit({ title: '🎯 Goal', content: 'Navigate project sections using git terminal commands.\n\nUse "git checkout <section>" to explore each part of the portfolio.' });
+        this.infoPanelService.show('🎯 Goal', 'Navigate project sections using git terminal commands.\n\nUse "git checkout <section>" to explore each part of the portfolio.');
         return null;
       case 'help':
-        this.infoPanel.emit({
-          title: '📖 Help',
-          content: 'Available commands:\n\n• git checkout <section>\n• switch mode\n• show goal\n• help\n• clear\n\nSections:\nabout, skills, experience, projects,\ncertifications, education, referrals, contacts'
-        });
+        this.infoPanelService.show('📖 Help', 'Available commands:\n\n• git checkout <section>\n• switch mode\n• show goal\n• help\n• clear\n\nSections:\nabout, skills, experience, projects,\ncertifications, education, referrals, contacts');
         return null;
         case 'clear':       
          this.commandHistory = [];
