@@ -2,7 +2,7 @@ import {
   Component, inject, afterNextRender, OnDestroy, DestroyRef,
   signal, ChangeDetectionStrategy, PLATFORM_ID
 } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser, AsyncPipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgwWindowsManagerService, NgwWindowsContainerComponent } from 'ngx-windows';
 import {
@@ -15,6 +15,8 @@ import { TaskbarComponent } from '../taskbar/taskbar';
 import { FileViewerComponent } from '../file-viewer/file-viewer';
 import { TerminalWindowComponent } from '../terminal-window/terminal-window';
 import { CommandModalService } from '../../services/command-modal-service';
+import { InfoPanelService } from '../../services/info-panel.service';
+import { InfoPanel } from '../info-panel/info-panel';
 
 const DESKTOP_FILES: DesktopFile[] = [
   { id: 'terminal',       label: 'Terminal',       icon: '💻', type: 'app' },
@@ -41,9 +43,11 @@ const ICON_POSITIONS_STORAGE_KEY = 'desktop.icon.positions.v1';
   standalone: true,
   imports: [
     CommonModule,
+    AsyncPipe,
     NgwWindowsContainerComponent,
     DesktopIconComponent,
     TaskbarComponent,
+    InfoPanel,
   ],
   providers: [NgwWindowsManagerService],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,6 +68,16 @@ const ICON_POSITIONS_STORAGE_KEY = 'desktop.icon.positions.v1';
 
       <!-- ngx-windows container -->
       <ngw-windows-container [style]="{ width: '100vw', height: '100vh' }" />
+
+      <!-- Info panel overlay (show goal / help) -->
+      @if (infoPanelService.panel$ | async; as panel) {
+        <div class="info-panel-overlay">
+          <app-info-panel
+            [title]="panel.title"
+            [content]="panel.content"
+            (closed)="infoPanelService.hide()" />
+        </div>
+      }
     </div>
 
     <!-- Taskbar rendered outside desktop click zone -->
@@ -96,6 +110,14 @@ const ICON_POSITIONS_STORAGE_KEY = 'desktop.icon.positions.v1';
       left: 0;
       z-index: 100;
     }
+
+    .info-panel-overlay {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 200;
+      pointer-events: auto;
+    }
   `]
 })
 export class DesktopComponent implements OnDestroy {
@@ -103,6 +125,7 @@ export class DesktopComponent implements OnDestroy {
   private destroyRef = inject(DestroyRef);
   private platformId = inject(PLATFORM_ID);
   private modalService = inject(CommandModalService);
+  infoPanelService = inject(InfoPanelService);
   private isBrowser = isPlatformBrowser(this.platformId);
 
   desktopFiles = DESKTOP_FILES;
