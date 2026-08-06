@@ -38,6 +38,7 @@ export class CommandTerminal implements OnInit, AfterViewChecked {
     'git checkout projects',
     'git checkout education',
     'git checkout certifications',
+    'git checkout certificates',
     'git checkout referrals',
     'git checkout contacts',
     'git checkout introduction',
@@ -175,7 +176,11 @@ export class CommandTerminal implements OnInit, AfterViewChecked {
 
       case 'git checkout certifications':
         this.modalService.openModal(input);
-        return 'Opening Certifications section...';
+        return 'Opening Certifications Explorer section...';
+
+      case 'git checkout certificates':
+        this.modalService.openModal(input);
+        return 'Opening Certifications Explorer section...';
 
       case 'git checkout education':
         this.modalService.openModal(input);

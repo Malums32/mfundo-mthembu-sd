@@ -72,7 +72,13 @@ export class CommandModalService {
 
   private getFileForCommand(command: string): string | null {
     const section = command.replace('git checkout ', '').trim().toLowerCase();
-    const resolvedSection = section === 'skills' ? 'skills-explorer' : section === 'projects' ? 'projects-explorer' : section;
+    const aliases: Record<string, string> = {
+      skills: 'skills-explorer',
+      projects: 'projects-explorer',
+      certifications: 'certifications-explorer',
+      certificates: 'certifications-explorer',
+    };
+    const resolvedSection = aliases[section] ?? section;
     const validSections = [
       'introduction',
       'about',
@@ -80,6 +86,11 @@ export class CommandModalService {
       'experience',
       'education',
       'certifications',
+      'certifications-explorer',
+      'certification-aspnet-core',
+      'certification-react',
+      'certification-sap-cdc-essentials',
+      'certification-sap-commerce-s4hana-integrations',
       'referrals',
       'contacts',
       'projects',
