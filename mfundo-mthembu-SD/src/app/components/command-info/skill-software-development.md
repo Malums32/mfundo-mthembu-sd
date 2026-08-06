@@ -14,3 +14,7 @@ title: Software Development
 - CI/CD pipeline exposure using Jenkins
 - Secure file encryption system development
 - Data integration and workflow automation concepts
+
+<div class="nav-button">
+<button class="button" data-command="git checkout skills-explorer">&lt; Back </button>
+</div>
