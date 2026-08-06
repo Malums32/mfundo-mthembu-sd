@@ -38,6 +38,7 @@ export class CommandTerminal implements OnInit, AfterViewChecked {
     'git checkout projects',
     'git checkout education',
     'git checkout certifications',
+    'git checkout certificates',
     'git checkout referrals',
     'git checkout contacts',
     'git checkout introduction',
@@ -56,23 +57,30 @@ export class CommandTerminal implements OnInit, AfterViewChecked {
   private historyIndex = -1;
 
   ngOnInit(): void {
-
-
     this.commandHistory = this.seedCommands.map(cmd => ({
       ...cmd,
       id: this.nextId++,
     }));
+
+    this.runInitialCommand();
 
     this.modalService.commandExecuted$.subscribe((command) => {
       const section = command.replace('git checkout ', '').trim();
       this.commandHistory.push({
         id: this.nextId++,
         input: command,
-        result: `Opening ${section} section...`,
+        result: `Opening ${section} section. ..`,
       });
       // Open the next modal (service handles deduplication)
       this.modalService.openModal(command);
     });
+  }
+
+  runInitialCommand(): void {
+    if(this.seedCommands.length === 0){
+      const initialCommand = 'help';
+      this.addCommand(initialCommand);
+    }
   }
 
   ngAfterViewChecked(): void {
@@ -153,26 +161,38 @@ export class CommandTerminal implements OnInit, AfterViewChecked {
       case 'git checkout about':
         this.modalService.openModal(input);
         return 'Opening About section...';
+
       case 'git checkout skills':
         this.modalService.openModal(input);
-        return 'Opening Skills section...';
+        return 'Opening Skills Explorer section...';
+
       case 'git checkout experience':
         this.modalService.openModal(input);
         return 'Opening Experience section...';
+
       case 'git checkout projects':
       this.modalService.openModal(input);
-      return 'Opening Projects section...';
+      return 'Opening Projects Explorer section...';
+
       case 'git checkout certifications':
         this.modalService.openModal(input);
-        return 'Opening Certifications section...';
+        return 'Opening Certifications Explorer section...';
+
+      case 'git checkout certificates':
+        this.modalService.openModal(input);
+        return 'Opening Certifications Explorer section...';
+
       case 'git checkout education':
         this.modalService.openModal(input);
         return 'Opening Education section...';
+
       case 'git checkout referrals':
         this.modalService.openModal(input);
         return 'Opening Referrals section...';
+
       case 'git checkout contacts':
         this.modalService.openModal(input);
+        
         return 'Opening Contacts section...';
         case 'show goal':
         this.infoPanelService.show('🎯 Goal', 'Navigate project sections using git terminal commands.\n\nUse "git checkout <section>" to explore each part of the portfolio.');

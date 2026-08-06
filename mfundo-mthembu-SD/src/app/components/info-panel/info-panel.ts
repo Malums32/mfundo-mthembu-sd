@@ -14,7 +14,6 @@ import { map } from 'rxjs';
         <div class="traffic-lights" aria-hidden="true">
           <span class="dot close" (click)="onClose()"></span>
           <span class="dot min"></span>
-          <span class="dot max"></span>
         </div>
         <span class="info-title">{{ title }}</span>
       </div>

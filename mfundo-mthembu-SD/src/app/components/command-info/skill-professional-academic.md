@@ -10,3 +10,7 @@ title: Professional & Academic Skills
 - Critical thinking and philosophical problem-solving
 - Leadership and collaboration
 - Independent learning and research
+
+<div class="nav-button">
+<button class="button" data-command="git checkout skills-explorer">&lt; Back </button>
+</div>
