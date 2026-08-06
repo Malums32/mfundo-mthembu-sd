@@ -19,6 +19,6 @@ A shadow service that passively mirrors and captures API traffic flowing through
 
 ### Status
 <span class="progress-code">Completed</span>
-<div class ="nav-button">
- <button class="button (click)= 'openFootLook()'"> Open </button>
+<div class="nav-button">
+ <button class="button" data-command="git checkout projects-explorer">&lt; Back</button>
 </div>

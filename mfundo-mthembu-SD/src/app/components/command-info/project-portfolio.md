@@ -21,3 +21,7 @@ A terminal-themed portfolio experience where users navigate sections via command
 
 ### Status
 <span class="progress-code">Completed</span>
+
+<div class="nav-button">
+<button class="button" data-command="git checkout projects-explorer">&lt; Back </button>
+</div>

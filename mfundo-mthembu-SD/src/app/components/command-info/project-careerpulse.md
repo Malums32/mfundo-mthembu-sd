@@ -20,3 +20,7 @@ An automation pipeline that monitors inbound newsletters, classifies relevance, 
 
 ### Status
 <span class="progress-code">In Progress</span>
+
+<div class="nav-button">
+<button class="button" data-command="git checkout projects-explorer">&lt; Back </button>
+</div>
